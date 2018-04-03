@@ -13,11 +13,10 @@ class Consoles extends ItemData
 {
     private String model = "";
     private String condition = "";
-    private int price = 0;
     
     public Consoles(){}
     
-    public Consoles(String model, String condition, int price)
+    public Consoles(String model, String condition, double price)
     {
         this.model = model;
         this.condition = condition;
@@ -34,24 +33,23 @@ class Consoles extends ItemData
         this.condition =  condition;
     }
     
-    public void setPrice(int price)
-    {
-        this.price = price;
-    }
-    
-    public String getModel(String model)
+
+    public String getModel()
     {
         return model;
     }
     
-    public String getCondition(String condition)
+    public String getCondition()
     {
         return condition;
     }
     
-    public int getPrice(int price)
+
+    public void printInfo()
     {
-        return price;
+        System.out.println("Model: " + model);
+        System.out.println("Condition: " + condition);
+        System.out.println("Price: " + price);
     }
     
     @Override

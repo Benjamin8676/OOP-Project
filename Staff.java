@@ -1,25 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gamestore;
 
-/**
- *
- * @author ben
- */
 class Staff extends UserData
 {
     private String name = "";
-    private String password = "";
-    private String staffID = "";
+    private int staffID;
     
     public Staff(){}
     
-    public Staff(String name, String password, String staffID)
+    public Staff(String name, String password, int staffID)
     {
-        
+        this.name = name;
+        this.password = password;
+        this.staffID = staffID;
     }
     
     public void setName(String name)
@@ -27,29 +19,26 @@ class Staff extends UserData
         this.name = name;
     }
     
-    public String getName(String name)
+    public String getName()
     {
         return name;
     }
     
-    public void setStaffID(String staffID)
+    public void setStaffID(int staffID)
     {
         this.staffID = staffID;
     }
     
-    public String getStaffID(String staffID)
+    public int getStaffID()
     {
         return staffID;
     }
     
-    public void setPassword(String password)
+    public void printInfo()
     {
-        this.password = password;
-    }
-    
-    public String getPassword(String password)
-    {
-        return password;
+        System.out.println("Name: " + name);
+        System.out.println("Password: " + password);
+        System.out.println("Staff ID: " + staffID);
     }
     
     @Override

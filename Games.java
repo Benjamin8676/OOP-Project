@@ -15,14 +15,14 @@ class Games extends ItemData
     private String genre = "";
     private String system = "";
     private String condition = "";
-    private int price = 0;
+
     
     
     public Games(){}
     
-    public Games(String title, String genre, String system, String condition, int price)
+    public Games(String title, String genre, String system, String condition, double price)
     {
-        setTitle(title);
+        this.title = title;
         this.genre = genre;
         this.system = system;
         this.condition = condition;
@@ -49,34 +49,33 @@ class Games extends ItemData
         this.condition = condition;
     }
     
-    public void setPrice(int price)
-    {
-        this.price = price;
-    }
-    
-    public String getTitle(String title)
+    public String getTitle()
     {
         return title;
     }
     
-    public String getGenre(String genre)
+    public String getGenre()
     {
         return genre;
     }
     
-    public String getSystem(String system)
+    public String getSystem()
     {
         return system;
     }
     
-    public String getCondition(String condition)
+    public String getCondition()
     {
         return condition;
     }
     
-    public int getPrice(int price)
+    public void printInfo()
     {
-        return price;
+        System.out.println("Title: " + title);
+        System.out.println("Genre: " + genre);
+        System.out.println("System: " + system);
+        System.out.println("Condition: " + condition);
+        System.out.println("Price: " + price);
     }
     
     @Override

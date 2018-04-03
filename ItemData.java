@@ -10,5 +10,17 @@ package gamestore;
  * @author ben
  */
 public class ItemData {
+    public double price = 0;
+    
+        public void setPrice(double price)
+    {
+        this.price = price;
+    }
+    
+        
+        public double getPrice()
+    {
+        return price;
+    }
     
 }

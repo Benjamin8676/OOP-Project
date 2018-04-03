@@ -15,13 +15,15 @@ public class Misc extends ItemData
     private String itemDescription = "";
     private String itemType = "";
     
+    
     public Misc(){}
     
-    public Misc(String itemName, String itemDescription, String itemType)
+    public Misc(String itemName, String itemDescription, String itemType, double price)
     {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.itemType = itemType;
+        this.price = price;
     }
     
     public void setItemName(String itemName)
@@ -39,19 +41,27 @@ public class Misc extends ItemData
         this.itemType = itemType;
     }
     
-    public String getItemName(String itemName)
+    public String getItemName()
     {
         return itemName;
     }
     
-    public String getItemDescription(String itemDescription)
+    public String getItemDescription()
     {
         return itemDescription;
     }
     
-    public String getItemType(String itemType)
+    public String getItemType()
     {
         return itemType;
+    }
+    
+    public void printInfo()
+    {
+        System.out.println("Item: " + itemName);
+        System.out.println("Info: " + itemDescription);
+        System.out.println("Type: " + itemType);
+        System.out.println("Price: " + price);
     }
     
     @Override
@@ -59,6 +69,7 @@ public class Misc extends ItemData
     {
         return ("\nItem: " + itemName + 
                 "\nDescription: " + itemDescription + 
-                "\nType: " + itemType);
+                "\nType: " + itemType +
+                "\nPrice: " + price);
     }
 }

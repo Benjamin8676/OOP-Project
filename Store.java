@@ -7,51 +7,465 @@ public class Store {
 
     public static void main(String[] args) {
         int t = 1;
-
+        int input, ID;
+        double price;
+        String name, password, title, genre, sys, condition, model;
+        String itemName, itemDescription, itemType;
+        String command = "";
+        Scanner scan = new Scanner(System.in);
         
+        // <editor-fold defaultstate="collapsed" desc="Array Lists"> 
+        ArrayList<Members> dataMembers = new ArrayList<>();
+        dataMembers.add(new Members("Member01", "pass001", 343343));
+        dataMembers.add(new Members("Member02", "pass002", 121121));
+        dataMembers.add(new Members("Member03", "pass003", 454454));
+        dataMembers.add(new Members("Member04", "pass004", 565565));
+        dataMembers.add(new Members("Member05", "pass005", 676676));
+        
+        ArrayList<Staff> dataStaff = new ArrayList<>();
+        dataStaff.add(new Staff("Staff01", "pass999", 999999));
+        dataStaff.add(new Staff("Staff02", "pass888", 888888));
+        dataStaff.add(new Staff("Staff03", "pass777", 777777));
+        dataStaff.add(new Staff("Staff04", "pass666", 666666));
+        dataStaff.add(new Staff("Staff05", "pass555", 555555));
+         
+        ArrayList<Games> dataGames = new ArrayList<>();
+        dataGames.add(new Games("Halo", "Sci-fi", "Xbox", "New", 60.00));
+        dataGames.add(new Games("Halo Reach", "Sci-fi", "Xbox", "New", 60.00));
+        dataGames.add(new Games("Halo 2", "Sci-fi", "Xbox", "New", 60.00));
+        dataGames.add(new Games("Halo 3", "Sci-fi", "Xbox", "New", 60.00));
+        dataGames.add(new Games("Halo Wars", "Sci-fi", "Xbox", "New", 60.00));
+        
+        ArrayList<Consoles> dataConsoles = new ArrayList<>();
+        dataConsoles.add(new Consoles("PS4", "New", 400.00));
+        dataConsoles.add(new Consoles("Xbox One", "New", 450.00));
+        dataConsoles.add(new Consoles("Nintendo Switch", "New", 500.00));
+         
+        ArrayList<Misc> dataMisc = new ArrayList<>(); 
+        dataMisc.add(new Misc("DVD01", "This is a movie.", "Video media", 8.00));
+        dataMisc.add(new Misc("CD01", "This is a music cd.", "Music media", 12.00));
+        dataMisc.add(new Misc("DVD02", "This is a movie.", "Video media", 6.00));
+        dataMisc.add(new Misc("CD02", "This is a music cd.", "Music media", 15.00));
+        // </editor-fold>
+        
+        
+// for each 'if' and 'while' loop, command is set back to "" in  
+// order for the user to traverse the menu.
+        
+        while(!command.equalsIgnoreCase("0")){
+            
+            System.out.println("1: Login as member");
+            System.out.println("2: Login as staff");
+            System.out.println("0: Quit");        
+            command = scan.next();
+            System.out.println();
        
         
-        Scanner scan = new Scanner(System.in);
-        ArrayList<Members> dataMembers = new ArrayList<>();
-        
-        String name, password;
-        int ID, input;
-        
-        do{
-        
-        System.out.println("How many people would you like to enter: ");
-        input = scan.nextInt();
-        
-        for(int i=0;i<input;i++)
-        {
-            System.out.println("Enter details of member " + (i+1));
-            System.out.println("Enter username: ");
-            name = scan.next();
-            System.out.println("Enter password: ");
-            password = scan.next();
-            System.out.println("Enter ID: ");
-            ID = scan.nextInt();
-            dataMembers.add(new Members(name, password, ID));
-        }
-        
-        for(Members object : dataMembers)
-        {        
-            System.out.println("Member: " + object.getUsername());
-            System.out.println("Password: " + object.getPassword());         
-        }
+            //Start for login as member
+            if(command.equalsIgnoreCase("1"))
+            {
+                command = "";
+                while(!command.equalsIgnoreCase("0"))
+                {
+                    System.out.println("1: View Games");
+                    System.out.println("2: View Consoles");
+                    System.out.println("3: View Misc Items");
+                    System.out.println("4: Add Item to Cart");
+                    System.out.println("0: Back");
+                    command = scan.next();
+                    System.out.println();
+                    
+                    
+                    if(command.equalsIgnoreCase("1"))
+                    {
+                        for(Games obj: dataGames)
+                        {
+                            System.out.println(obj);
+                        }
+                        System.out.println();
+                    }
+                    
+                    if(command.equalsIgnoreCase("2"))
+                    {
+                        for(Consoles obj: dataConsoles)
+                        {
+                            System.out.println(obj);
+                        }
+                        System.out.println();
+                    }
+                    
+                    if(command.equalsIgnoreCase("3"))
+                    {
+                        for(Misc obj: dataMisc)
+                        {
+                            System.out.println(obj);
+                        }
+                        System.out.println();
+                    }
+                    
+                }
+                command = "";
+               
 
-        }while(t==1);
+            }
+
+            
+            //Start of login as staff
+            if(command.equalsIgnoreCase("2"))
+            {
+                command = "";
+                while(!command.equalsIgnoreCase("0"))
+                {
+                    System.out.println("1: Maintain members");
+                    System.out.println("2: Maintain staff");
+                    System.out.println("3: Maintain games");
+                    System.out.println("4: Maintain consoles");
+                    System.out.println("5: Maintain misc. items");
+                    System.out.println("0: back");
+                    command = scan.next();
+                    System.out.println();
+                    
+//==============================================================================    
+//=============================MEMBERS==========================================
+//==============================================================================
+                    
+                    if(command.equalsIgnoreCase("1"))
+                    {
+                        command = "";
+                        while(!command.equalsIgnoreCase("0"))
+                        {
+                            System.out.println("1: View members");
+                            System.out.println("2: Add members");
+                            System.out.println("3: Delete members");
+                            System.out.println("0: back");
+                            command = scan.next();
+                            System.out.println();
+                            
+                            //View
+                            if(command.equalsIgnoreCase("1"))
+                            {
+                                    for(Members obj: dataMembers)
+                                    {
+                                        System.out.println(obj);
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Add
+                            if(command.equalsIgnoreCase("2"))
+                            {
+                                    System.out.println("How many members would you like to enter: ");
+                                    input = scan.nextInt();
+
+                                    for(int i=0;i<input;i++)
+                                    {
+                                        System.out.println("Enter details of member " + (i+1));
+                                        System.out.println("Enter username: ");
+                                        name = scan.next();
+                                        System.out.println("Enter password: ");
+                                        password = scan.next();
+                                        System.out.println("Enter ID: ");
+                                        ID = scan.nextInt();
+                                        dataMembers.add(new Members(name, password, ID));
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Delete
+                            if(command.equalsIgnoreCase("3"))
+                            {
+                                    System.out.println("Enter index of the member for deletion: ");
+                                    input = scan.nextInt();
+                                    dataMembers.remove(input);
+                                    System.out.println();
+                            }
+                            
+                        }
+                        command = "";
+                    }
+                    
+//==============================================================================
+//===============================STAFF==========================================
+//==============================================================================
+
+                    if(command.equalsIgnoreCase("2"))
+                    {
+                        command = "";
+                        while(!command.equalsIgnoreCase("0"))
+                        {
+                            System.out.println("1: View staff");
+                            System.out.println("2: Add staff");
+                            System.out.println("3: Delete staff");
+                            System.out.println("0: back");
+                            command = scan.next();
+                            System.out.println();
+                            
+                            //View
+                            if(command.equalsIgnoreCase("1"))
+                            {
+                                
+                                
+                                    for(Staff obj: dataStaff)
+                                    {
+                                        System.out.println(obj);
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Add
+                            if(command.equalsIgnoreCase("2"))
+                            {
+                                    System.out.println("How many staff would you like to enter: ");
+                                    input = scan.nextInt();
+
+                                    for(int i=0;i<input;i++)
+                                    {
+                                        System.out.println("Enter details of staff member " + (i+1));
+                                        System.out.println("Enter name: ");
+                                        name = scan.next();
+                                        System.out.println("Enter password: ");
+                                        password = scan.next();
+                                        System.out.println("Enter staff ID: ");
+                                        ID = scan.nextInt();
+                                        dataStaff.add(new Staff(name, password, ID));
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Delete
+                            if(command.equalsIgnoreCase("3"))
+                            {
+                                    System.out.println("Enter index of the staff member for deletion: ");
+                                    input = scan.nextInt();
+                                    dataStaff.remove(input);
+                                    System.out.println();
+                            }
+                            
+
+                        }
+                        command = "";
+                    }
+                    
+//==============================================================================
+//==============================GAMES===========================================
+//==============================================================================                    
+                    
+                    if(command.equalsIgnoreCase("3"))
+                    {
+                        command = "";
+                        while(!command.equalsIgnoreCase("0"))
+                        {
+                            System.out.println("1: View games");
+                            System.out.println("2: Add games");
+                            System.out.println("3: Delete games");
+                            System.out.println("0: back");
+                            command = scan.next();
+                            System.out.println();
+                            
+                            //View
+                            if(command.equalsIgnoreCase("1"))
+                            {
+                                    for(Games obj: dataGames)
+                                    {
+                                        System.out.println(obj);
+                                    }
+                                    System.out.println();
+                            }          
+                            
+                            //Add
+                            if(command.equalsIgnoreCase("2"))
+                            {
+                                    System.out.println("How many games would you like to enter: ");
+                                    input = scan.nextInt();
+
+                                    for(int i=0;i<input;i++)
+                                    {
+                                        System.out.println("Enter details of staff member " + (i+1));
+                                        System.out.println("Enter title: ");
+                                        title = scan.next();
+                                        System.out.println("Enter genre: ");
+                                        genre = scan.next();
+                                        System.out.println("Enter system: ");
+                                        sys = scan.next();
+                                        System.out.println("Enter condition: ");
+                                        condition = scan.next();
+                                        System.out.println("Enter price: ");
+                                        price = scan.nextInt();
+                                        dataGames.add(new Games(title, genre, sys, condition, price));
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Delete
+                            if(command.equalsIgnoreCase("3"))
+                            {
+                                    System.out.println("Enter index of the game for deletion: ");
+                                    input = scan.nextInt();
+                                    dataGames.remove(input);
+                                    System.out.println();
+                            }
+                            
+                        }
+                        command = "";
+                    }
+//==============================================================================
+//=============================CONSOLES=========================================
+//==============================================================================
+                    if(command.equalsIgnoreCase("4"))
+                    {
+                        command = "";
+                        while(!command.equalsIgnoreCase("0"))
+                        {
+                            System.out.println("1: View consoles");
+                            System.out.println("2: Add consoles");
+                            System.out.println("3: Delete consoles");
+                            System.out.println("0: back");
+                            command = scan.next();
+                            System.out.println();
+                            
+                            
+                            //View
+                            if(command.equalsIgnoreCase("1"))
+                            {
+                                    for(Consoles obj: dataConsoles)
+                                    {
+                                        System.out.println(obj);
+                                    }
+                                    System.out.println();
+                            } 
+                            
+                            //Add
+                            if(command.equalsIgnoreCase("2"))
+                            {
+                                    System.out.println("How many consoles would you like to enter: ");
+                                    input = scan.nextInt();
+
+                                    for(int i=0;i<input;i++)
+                                    {
+                                        System.out.println("Enter details for the console" + (i+1));
+                                        System.out.println("Enter model: ");
+                                        model = scan.next();
+                                        System.out.println("Enter condition: ");
+                                        condition = scan.next();
+                                        System.out.println("Enter price: ");
+                                        price = scan.nextInt();
+                                        dataConsoles.add(new Consoles(model, condition, price));
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Delete
+                            if(command.equalsIgnoreCase("3"))
+                            {
+                                    System.out.println("Enter index of the console for deletion: ");
+                                    input = scan.nextInt();
+                                    dataConsoles.remove(input);
+                                    System.out.println();
+                            }
+                            
+                        }
+                        command = "";
+                    }
+//==============================================================================
+//=============================MISC. ITEMS======================================
+//==============================================================================                    
+                    if(command.equalsIgnoreCase("5"))
+                    {
+                        command = "";
+                        while(!command.equalsIgnoreCase("0"))
+                        {
+                            System.out.println("1: View misc. items");
+                            System.out.println("2: Add misc. items");
+                            System.out.println("3: Delete misc. items");
+                            System.out.println("0: back");
+                            command = scan.next();
+                            System.out.println();
+                            
+                            //View
+                            if(command.equalsIgnoreCase("1"))
+                            {
+                                    for(Misc obj: dataMisc)
+                                    {
+                                        System.out.println(obj);
+                                    }
+                                    System.out.println();
+                            }                    
+                            
+                            //Add
+                            if(command.equalsIgnoreCase("2"))
+                            {
+                                    System.out.println("How many misc. items would you like to enter: ");
+                                    input = scan.nextInt();
+
+                                    for(int i=0;i<input;i++)
+                                    {
+                                        System.out.println("Enter details of misc. item " + (i+1));
+                                        System.out.println("Enter item name: ");
+                                        itemName = scan.next();
+                                        System.out.println("Enter item description: ");
+                                        itemDescription = scan.next();
+                                        System.out.println("Enter item type: ");
+                                        itemType = scan.next();
+                                        System.out.println("Enter item price: ");
+                                        price = scan.nextInt();
+                                        dataMisc.add(new Misc(itemName, itemDescription, itemType, price));
+                                    }
+                                    System.out.println();
+                            }
+                            
+                            //Delete
+                            if(command.equalsIgnoreCase("3"))
+                            {
+                                    System.out.println("Enter index of the misc. item for deletion: ");
+                                    input = scan.nextInt();
+                                    dataMisc.remove(input);
+                                    System.out.println();
+                            }
+                            
+                        }
+                        command = "";
+                    }
+
+                    
+                }
+                command = "";
+            }
         
+        
+        
+        }   
     }
 }
 
 
-
-
-
-
-//    public static String UserCheck(String Email) 
+        // <editor-fold defaultstate="collapsed" desc="Add Users"> 
+//        System.out.println("How many people would you like to enter: ");
+//        input = scan.nextInt();
+//        
+//        for(int i=0;i<input;i++)
 //        {
+//            System.out.println("Enter details of member " + (i+1));
+//            System.out.println("Enter username: ");
+//            name = scan.next();
+//            System.out.println("Enter password: ");
+//            password = scan.next();
+//            System.out.println("Enter ID: ");
+//            ID = scan.nextInt();
+//            dataMembers.add(new Members(name, password, ID));
+//        }
+//        
+//        for(Members object : dataMembers)
+//        {        
+//            System.out.println("Member: " + object.getUsername());
+//            System.out.println("Password: " + object.getPassword());         
+//        }
+        // </editor-fold>
+
+
+
+
+
+//    public static String UserCheck(String Email) {
 //
 //		String result = "Valid E-mail";			
 //		int atLoc =0;						
@@ -95,8 +509,8 @@ public class Store {
 //		return (result);						
 //
 //	} 
-//    public static String PassCheck (String Password) 
-//        {
+//
+//    public static String PassCheck (String Password) {
 //
 //		String result = "Valid Password";			
 //		int length = 0;						
@@ -124,51 +538,4 @@ public class Store {
 //			return (result);								
 //
 //	} 
-//
-//    }
-    
 
-
-
-
-
-//        ArrayList<Member> dataMember = new ArrayList<>();
-//        String defaultNames[] = new String[]{"Ben", "Rebecca", "Alex", "Jon", "Omar"};
-//        String defaultPasswords[] = new String[]{"pass01", "pass02", "pass03", "pass04", "pass05", };
-//        Member defaultMembers[] = new Member[5];
-//        Scanner input = new Scanner(System.in);
-
-
-//
-//        
-//        
-//        for(int i = 1; i < defaultNames.length; i++)
-//        {
-//            defaultMembers[i] = new Member(defaultNames[i], defaultPasswords[i]);
-//            dataMember.add(defaultMembers[i]);
-//        }
-//        
-//        while (!commandMenu.equalsIgnoreCase("0"))  
-//        {
-//            System.out.println("\nEnter command");
-//            System.out.println("1: Current users.");
-//            System.out.println("2: Staff");
-//            System.out.println("0: Quit");
-//            commandMenu = input.next();
-//            System.out.println();
-//            
-//            
-//            //DISPLY FOR CURRENT USERS
-//            if(commandMenu.equalsIgnoreCase("1"))
-//            {
-//                {
-//                    System.out.println("===Current Users===");
-//                    for(int x = 0; x < defaultNames.length; x ++)  
-//                    {  
-//                        System.out.println(defaultNames[x] + " " +  defaultPasswords[x]);
-//                    }
-//                }
-//            }
-//            //END OF DISPLAY FOR CURRENT USERS
-
-    	//if your implementing the runnable interface you can extend the methods of that object
