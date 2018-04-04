@@ -437,34 +437,6 @@ public class Store {
     }
 }
 
-
-        // <editor-fold defaultstate="collapsed" desc="Add Users"> 
-//        System.out.println("How many people would you like to enter: ");
-//        input = scan.nextInt();
-//        
-//        for(int i=0;i<input;i++)
-//        {
-//            System.out.println("Enter details of member " + (i+1));
-//            System.out.println("Enter username: ");
-//            name = scan.next();
-//            System.out.println("Enter password: ");
-//            password = scan.next();
-//            System.out.println("Enter ID: ");
-//            ID = scan.nextInt();
-//            dataMembers.add(new Members(name, password, ID));
-//        }
-//        
-//        for(Members object : dataMembers)
-//        {        
-//            System.out.println("Member: " + object.getUsername());
-//            System.out.println("Password: " + object.getPassword());         
-//        }
-        // </editor-fold>
-
-
-
-
-
 //    public static String UserCheck(String Email) {
 //
 //		String result = "Valid E-mail";			
