@@ -8,10 +8,10 @@ public class Store {
     public static void main(String[] args) {
         int t = 1;
         int input, ID;
-        double price;
+        double price, total;
         String name, password, title, genre, sys, condition, model;
         String itemName, itemDescription, itemType;
-        String command = "";
+        String command = "", response = "";
         Scanner scan = new Scanner(System.in);
         
         // <editor-fold defaultstate="collapsed" desc="Array Lists"> 
@@ -46,6 +46,8 @@ public class Store {
         dataMisc.add(new Misc("CD01", "This is a music cd.", "Music media", 12.00));
         dataMisc.add(new Misc("DVD02", "This is a movie.", "Video media", 6.00));
         dataMisc.add(new Misc("CD02", "This is a music cd.", "Music media", 15.00));
+        
+        ArrayList<Cart> dataCart = new ArrayList<>();
         // </editor-fold>
         
         
@@ -70,7 +72,7 @@ public class Store {
                     System.out.println("1: View Games");
                     System.out.println("2: View Consoles");
                     System.out.println("3: View Misc Items");
-                    System.out.println("4: Add Item to Cart");
+                    System.out.println("4: View Cart");
                     System.out.println("0: Back");
                     command = scan.next();
                     System.out.println();
@@ -83,6 +85,22 @@ public class Store {
                             System.out.println(obj);
                         }
                         System.out.println();
+                        System.out.println("Would you like to add an item to your cart?(y/n)");
+                        response = scan.next();
+                        
+                        if(response.equalsIgnoreCase("y"))
+                        {
+                            System.out.println("Please enter the index of the item you wish to add to cart");
+                            input = scan.nextInt();
+                            title = dataGames.get(input).getTitle();
+                            price = dataGames.get(input).getPrice();
+                            dataCart.add(new Cart(title,price));
+                            System.out.println("Item added to cart");
+                            System.out.println();
+                            
+                        }
+                        
+                        System.out.println();
                     }
                     
                     if(command.equalsIgnoreCase("2"))
@@ -90,6 +108,21 @@ public class Store {
                         for(Consoles obj: dataConsoles)
                         {
                             System.out.println(obj);
+                        }
+                        System.out.println();
+                        System.out.println("Would you like to add an item to your cart?(y/n)");
+                        response = scan.next();
+                        
+                        if(response.equalsIgnoreCase("y"))
+                        {
+                            System.out.println("Please enter the index of the item you wish to add to cart");
+                            input = scan.nextInt();
+                            model = dataConsoles.get(input).getModel();
+                            price = dataConsoles.get(input).getPrice();
+                            dataCart.add(new Cart(model,price));
+                            System.out.println("Item added to cart");
+                            System.out.println();
+                            
                         }
                         System.out.println();
                     }
@@ -100,9 +133,98 @@ public class Store {
                         {
                             System.out.println(obj);
                         }
+                        
+                        System.out.println();
+                        System.out.println("Would you like to add an item to your cart?(y/n)");
+                        response = scan.next();
+                        
+                        if(response.equalsIgnoreCase("y"))
+                        {
+                            System.out.println("Please enter the index of the item you wish to add to cart");
+                            input = scan.nextInt();
+                            itemName = dataMisc.get(input).getItemName();
+                            price = dataMisc.get(input).getPrice();
+                            dataCart.add(new Cart(itemName,price));
+                            System.out.println("Item added to cart");
+                            System.out.println();
+                            
+                        }
+                        
                         System.out.println();
                     }
                     
+                    if(command.equalsIgnoreCase("4"))
+                    {
+                        if(dataCart.isEmpty())
+                        {
+                            System.out.println("Cart is empty");
+                            System.out.println();
+                        }
+                        else
+                        {
+                            total = 0;
+                            for(Cart obj: dataCart)
+                                {
+                                    System.out.println(obj);
+                                }
+                            for(Cart obj: dataCart)
+                                {
+                                    total = total + obj.price;
+                                }
+                            System.out.println();
+                            System.out.println("The total cost of the items is " + total);
+                            System.out.println();
+
+                            while(!command.equalsIgnoreCase("0"))
+                            {
+                                System.out.println("1: Purchase Items");
+                                System.out.println("2: Remove Item");
+                                System.out.println("0: back");
+                                command = scan.next();
+                                System.out.println();
+
+
+                                if(command.equalsIgnoreCase("1"))
+                                {
+                                    System.out.println("Thank you for your purchase");
+                                    System.out.println();
+                                    dataCart.clear();
+                                    command = "0";
+                                }
+
+                                if(command.equalsIgnoreCase("2"))
+                                {
+                                    System.out.println("Please enter the index of the item you wish to remove");
+                                    input = scan.nextInt();
+                                    dataCart.remove(input);
+                                    System.out.println("Item removed");
+                                    if(dataCart.isEmpty())
+                                    {
+                                        System.out.println("Cart is empty");
+                                        System.out.println();
+                                        command = "0";
+                                    }
+                                    else
+                                    {
+                                        total = 0;
+
+                                        for(Cart obj: dataCart)
+                                        {
+                                            System.out.println(obj);
+                                        }
+                                        for(Cart obj: dataCart)
+                                        {
+                                            total = total + obj.price;
+                                        }
+                                        System.out.println();
+                                        System.out.println("The total cost of the items is " + total);
+                                        System.out.println();
+                                    }
+                                }
+                            }
+                        }
+                        command = "";
+                    }
                 }
                 command = "";
                
