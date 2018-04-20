@@ -1,4 +1,4 @@
-package gamestore;
+package RevisedGamestore;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Store {
 
     public static void main(String[] args) {
-        int t = 1;
+        //int t = 1;
         int input, ID;
         double price, total;
         String name, password, title, genre, sys, condition, model;
@@ -67,6 +67,9 @@ public class Store {
             if(command.equalsIgnoreCase("1"))
             {
                 command = "";
+                
+                
+                
                 while(!command.equalsIgnoreCase("0"))
                 {
                     System.out.println("1: View Games");

@@ -1,4 +1,4 @@
-package gamestore;
+package RevisedGamestore;
 
 public class UserData {
     public String password;

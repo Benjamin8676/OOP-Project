@@ -1,4 +1,4 @@
-package gamestore;
+package RevisedGamestore;
 
 class Staff extends UserData
 {
