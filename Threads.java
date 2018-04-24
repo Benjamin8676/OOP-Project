@@ -39,10 +39,10 @@ public class Threads extends Thread
      */
     public void run()
     {
-        int ID;
+        int ID = 0, num = 0;
         double price = 0, total = 0.0;
-        String name, password, title = "", genre, sys, condition, model = "";
-        String itemName = "", itemDescription, itemType;
+        String name = "", password = "", title = "", genre = "", sys = "", condition = "", model = "";
+        String itemName = "", itemDescription = "", itemType = "";
         
         ArrayList<Members> dataMembers = new ArrayList<>();
         dataMembers.add(new Members("Member01", "pass001", 343343));
@@ -89,21 +89,23 @@ public class Threads extends Thread
 	    Message msg = null;
 //	    int count = 0;
             
-            output.writeObject(new Message("1: Login as member \n2: Login as staff \n0: Quit"));
+            //output.writeObject(new Message("1: Login as member \n2: Login as staff \n0: Exit"));
             
 	    do{
+                output.writeObject(new Message("\n1: Login as member \n2: Login as staff \n0: Exit"));
 		// read and print message
 		msg = (Message)input.readObject();
 		System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
 
                 if(msg.theMessage.equalsIgnoreCase("1"))
                     //System.out.println("inside 1");
-                    loginAsMember(output, input, msg, title, model, itemName, price, total, dataGames, dataCart, dataConsoles, dataMisc);
-             //   if(msg.theMessage.equalsIgnoreCase("2"))
-//                    loginAsStaff(output, input, msg);
+                    msg = loginAsMember(output, input, msg, title, model, itemName, num, price, total, dataGames, dataCart, dataConsoles, dataMisc);
+                if(msg.theMessage.equalsIgnoreCase("2"))
+                    msg = loginAsStaff(output, input, msg, title, model, genre, sys, condition, name, password, itemName, itemDescription, itemType, ID, num, price, dataMembers, dataStaff, dataGames, dataConsoles, dataMisc);
 		// Write an ACK back to the sender
 //		count++;
 //		output.writeObject(new Message("Recieved message #" + count));
+               // System.out.println(msg.theMessage);
                     
 	    }while(!msg.theMessage.equalsIgnoreCase("0"));
 
@@ -119,7 +121,7 @@ public class Threads extends Thread
 
     }  //-- end run()
     
-    public void loginAsMember(ObjectOutputStream output, ObjectInputStream input, Message msg, String title, String model, String itemName, Double price,Double total, ArrayList<Games> dataGames, ArrayList<Cart> dataCart, ArrayList<Consoles> dataConsoles, ArrayList<Misc> dataMisc)//, ArrayList<Members> dataMembers)
+    public Message loginAsMember(ObjectOutputStream output, ObjectInputStream input, Message msg, String title, String model, String itemName, int num, Double price,Double total, ArrayList<Games> dataGames, ArrayList<Cart> dataCart, ArrayList<Consoles> dataConsoles, ArrayList<Misc> dataMisc)//, ArrayList<Members> dataMembers)
     {
         try {
            // final DataInputStream input;// = new ObjectInputStream(socket.getInputStream());
@@ -128,11 +130,16 @@ public class Threads extends Thread
            // System.out.println("inside login try");
     	    
         
-        output.writeObject(new Message ("1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
+        output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
         msg = (Message)input.readObject();
         
         do{
-		if(msg.theMessage.equalsIgnoreCase("1"))
+                if(msg.theMessage.equalsIgnoreCase("1"))
+                {
+//                    System.out.println("inside 1 back");
+                    break;
+                }
+		if(msg.theMessage.equalsIgnoreCase("2"))
                     {
                         String [] array = new String[dataGames.size()];
                         int i = 0;
@@ -142,7 +149,10 @@ public class Threads extends Thread
                             i++;
 //                            output.writeObject(new Message (obj.toString()));
                         }
-                        output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n" + array[3] + "\n" + array[4] + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        String str = String.join("\n",array);
+                        output.writeObject(new Message(str + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        //output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n" + array[3] + "\n" + array[4] + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        
                         //System.out.println();
                         //output.writeObject(new Message ("\nWould you like to add an item to your cart?(y/n)"));
                         msg = (Message)input.readObject();
@@ -151,22 +161,28 @@ public class Threads extends Thread
                         {
                             output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             msg = (Message)input.readObject();
-                            int num = Integer.parseInt(msg.theMessage);
+                            num = Integer.parseInt(msg.theMessage);
                             num = num - 1;
                             title = dataGames.get(num).getTitle();
                             //title = dataGames.get(input).getTitle();
                             price = dataGames.get(num).getPrice();
                             dataCart.add(new Cart(title,price));
-                            output.writeObject(new Message ("Item added to cart \n\n1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
+                            output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
                             //System.out.println();
                             
                         }
                         
+                        if(msg.theMessage.equalsIgnoreCase("n"))
+                        {
+                            output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                            msg = (Message)input.readObject();
+                        }
+                        
                         //System.out.println();
                     }
                     
-                    if(msg.theMessage.equalsIgnoreCase("2"))
+                    if(msg.theMessage.equalsIgnoreCase("3"))
                     {
                         String [] array = new String[dataConsoles.size()];
                         int i = 0;
@@ -175,7 +191,10 @@ public class Threads extends Thread
                             array[i] = obj.toString();
                             i++;
                         }
-                        output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        
+                        String str = String.join("\n",array);
+                        output.writeObject(new Message(str + "\n \nWould you like to add an item to your cart?(y/n)"));
+                       // output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n \nWould you like to add an item to your cart?(y/n)"));
                        // System.out.println();
                         //System.out.println("Would you like to add an item to your cart?(y/n)");
                         //response = scan.next();
@@ -183,24 +202,32 @@ public class Threads extends Thread
                         
                         if(msg.theMessage.equalsIgnoreCase("y"))
                         {
-                            output.writeObject(new Message ("Please enter the index of the item you wish to add to cart"));
+                            output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             //input = scan.nextInt();
                             msg = (Message)input.readObject();
                            // title = dataGames.get(Integer.parseInt(msg.theMessage)).getTitle();
-                            model = dataConsoles.get(Integer.parseInt(msg.theMessage)).getModel();
+                            num = Integer.parseInt(msg.theMessage);
+                            num = num - 1;
+                            model = dataConsoles.get(num).getModel();
                            // model = dataConsoles.get(input).getModel();
-                            price = dataConsoles.get(Integer.parseInt(msg.theMessage)).getPrice();
+                            price = dataConsoles.get(num).getPrice();
                             //price = dataConsoles.get(input).getPrice();
                             dataCart.add(new Cart(model,price));
-                            output.writeObject(new Message ("Item added to cart \n\n1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
+                            output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
                             //System.out.println();
                             
                         }
+                        
+                        if(msg.theMessage.equalsIgnoreCase("n"))
+                        {
+                            output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                            msg = (Message)input.readObject();
+                        }
                        // System.out.println();
                     }
                     
-                    if(msg.theMessage.equalsIgnoreCase("3"))
+                    if(msg.theMessage.equalsIgnoreCase("4"))
                     {
                         String [] array = new String[dataMisc.size()];
                         int i = 0;
@@ -209,7 +236,10 @@ public class Threads extends Thread
                             array[i] = obj.toString();
                             i++;
                         }
-                        output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n" + array[3] + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        
+                        String str = String.join("\n",array);
+                        output.writeObject(new Message(str + "\n \nWould you like to add an item to your cart?(y/n)"));
+                        //output.writeObject(new Message (array[0] + "\n" + array[1] + "\n" + array[2] + "\n" + array[3] + "\n \nWould you like to add an item to your cart?(y/n)"));
                         //System.out.println();
                         //System.out.println("Would you like to add an item to your cart?(y/n)");
                         //response = scan.next();
@@ -217,424 +247,589 @@ public class Threads extends Thread
                         
                         if(msg.theMessage.equalsIgnoreCase("y"))
                         {
-                            output.writeObject(new Message ("Please enter the index of the item you wish to add to cart"));
+                            output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             //input = scan.nextInt();
                             msg = (Message)input.readObject();
+                            num = Integer.parseInt(msg.theMessage);
+                            num = num - 1;
                             //model = dataConsoles.get(Integer.parseInt(msg.theMessage)).getModel();
-                            itemName = dataMisc.get(Integer.parseInt(msg.theMessage)).getItemName();
+                            itemName = dataMisc.get(num).getItemName();
                             //itemName = dataMisc.get(input).getItemName();
-                            price = dataMisc.get(Integer.parseInt(msg.theMessage)).getPrice();
+                            price = dataMisc.get(num).getPrice();
                             dataCart.add(new Cart(itemName,price));
-                            output.writeObject(new Message ("Item added to cart \n\n1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
+                            output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
                             //System.out.println();
                             
                         }
                         
+                        if(msg.theMessage.equalsIgnoreCase("n"))
+                        {
+                            output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                            msg = (Message)input.readObject();
+                        }
+                        
                         //System.out.println();
                     }
                     
-                    if(msg.theMessage.equalsIgnoreCase("4"))
+                    if(msg.theMessage.equalsIgnoreCase("5"))
                     {
                         if(dataCart.isEmpty())
                         {
-                            output.writeObject(new Message("Cart is empty"));
+                            output.writeObject(new Message("Cart is empty \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                            msg = (Message)input.readObject();
                             //System.out.println();
                         }
                         else
                         {
                             total = 0.0;
-                            for(Cart obj: dataCart)
-                                {
-                                    System.out.println(obj);
-                                }
+                            String [] array = new String[dataCart.size()];
+                            int i = 0;
                             for(Cart obj: dataCart)
                                 {
                                     total = total + obj.price;
+                                    array[i] = obj.toString();
+                                    i++;
+                                    //System.out.println(obj);
                                 }
+                            
+                            String str = String.join("\n",array);
+                            output.writeObject(new Message(str + "\n\nThe total cost of the items is " + total + "\n\n1: Back \n2: Purchase Items" + "\n3: Remove Item" + "\n0: Exit"));
+                            msg = (Message)input.readObject();
+//                            for(Cart obj: dataCart)
+//                                {
+//                                    total = total + obj.price;
+//                                }
                             //System.out.println();
-                            output.writeObject(new Message("The total cost of the items is " + total));
+                            //output.writeObject(new Message("The total cost of the items is " + total));
                             //System.out.println();
+//                            if(msg.theMessage.equalsIgnoreCase("1"))
+//                                {
+//                                    output.writeObject(new Message("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+//                                    msg = (Message)input.readObject();
+//                                }
 
-                            while(!msg.theMessage.equalsIgnoreCase("0"))
+                            while(true)
                             {
-                                output.writeObject(new Message("1: Purchase Items" + "\n2: Remove Item" + "\n0: back"));
+                                //output.writeObject(new Message("1: Purchase Items" + "\n2: Remove Item" + "\n0: back"));
                                 //command = scan.next();
-                                msg = (Message)input.readObject();
+                                //msg = (Message)input.readObject();
                                 //System.out.println();
-
-
                                 if(msg.theMessage.equalsIgnoreCase("1"))
                                 {
-                                    output.writeObject(new Message("Thank you for your purchase"));
-                                    //System.out.println();
-                                    dataCart.clear();
-                                    msg.theMessage = "0";
+                                    output.writeObject(new Message("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    break;
                                 }
 
                                 if(msg.theMessage.equalsIgnoreCase("2"))
                                 {
-                                    output.writeObject(new Message("Please enter the index of the item you wish to remove"));
+                                    output.writeObject(new Message("Thank you for your purchase \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                                    dataCart.clear();
+                                    break;
+                                    //msg.theMessage = "0";
+                                }
+
+                                if(msg.theMessage.equalsIgnoreCase("3"))
+                                {
+                                    output.writeObject(new Message("Please enter the item number you wish to remove"));
                                     //input = scan.nextInt();
                                     msg = (Message)input.readObject();
-                                    dataCart.remove(msg);
-                                    output.writeObject(new Message("Item removed"));
+                                    num = Integer.parseInt(msg.theMessage);
+                                    num = num - 1;
+                                    dataCart.remove(num);
+                                    //output.writeObject(new Message("Item removed"));
                                     if(dataCart.isEmpty())
                                     {
-                                        output.writeObject(new Message("Cart is empty"));
+                                        output.writeObject(new Message("Item removed \n\nCart is empty \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
+                                        msg = (Message)input.readObject();
+//                                        if(msg.theMessage.equalsIgnoreCase("0"))
+//                                        {
+//                                            output.writeObject(new Message("Thank you! Please come again"));
+//                                            System.out.println("** Closing connection with " + socket.getInetAddress() + ":" + socket.getPort() + " **");
+//                                            socket.close();
+//                                        }
+                                        break;
                                         //System.out.println();
-                                        msg.theMessage = "0";
+                                        //msg.theMessage = "0";
                                     }
                                     else
                                     {
                                         total = 0.0;
+                                        i=0;
+                                        String [] newArray = new String[dataCart.size()];
 
-                                        for(Cart obj: dataCart)
-                                        {
-                                            System.out.println(obj);
-                                        }
                                         for(Cart obj: dataCart)
                                         {
                                             total = total + obj.price;
+                                            newArray[i] = obj.toString();
+                                            i++;
+                                            //System.out.println(obj);
                                         }
+                                        
+                                        str = String.join("\n",newArray);
+                                        output.writeObject(new Message(str + "\n\nThe total cost of the items is " + total + "\n\n1: Back \n2: Purchase Items" + "\n3: Remove Item" + "\n0: Exit"));
+                                        msg = (Message)input.readObject();
+//                                        if(msg.theMessage.equalsIgnoreCase("0"))
+//                                        {
+//                                           // output.writeObject(new Message("Thank you! Please come again"));
+//                                            System.out.println("** Closing connection with " + socket.getInetAddress() + ":" + socket.getPort() + " **");
+//                                            socket.close();
+//                                        }
+                            
+//                                        for(Cart obj: dataCart)
+//                                        {
+//                                            total = total + obj.price;
+//                                        }
                                         //System.out.println();
-                                        output.writeObject(new Message("The total cost of the items is " + total));
+                                        //output.writeObject(new Message("The total cost of the items is " + total));
                                         //System.out.println();
                                     }
                                 }
+                                if(msg.theMessage.equalsIgnoreCase("0"))
+                                {
+                                    //output.writeObject(new Message("Thank you! Please come again"));
+//                                    System.out.println("** Closing connection with " + socket.getInetAddress() + ":" + socket.getPort() + " **");
+//                                    socket.close();
+//                                    break;
+                                    return msg;
+                                }
                             }
                         }
-                        msg.theMessage = "";
+                        //msg.theMessage = "";
                     }
                 //}
-                msg.theMessage = "";
-               
-
+                //msg.theMessage = "";
+                if(msg.theMessage.equalsIgnoreCase("0"))
+                {
+                    return msg;
+//                    output.writeObject(new Message("Thank you! Please come again"));
+//                    System.out.println("** Closing connection with " + socket.getInetAddress() + ":" + socket.getPort() + " **");
+//                    socket.close();
+                }
             //}
 
 	//	msg = (Message)input.readObject();
-        output.writeObject(new Message ("1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
-        msg = (Message)input.readObject();
-        }while(!msg.theMessage.equalsIgnoreCase("0"));
+       // output.writeObject(new Message ("1: View Games \n2: View Consoles \n3: View Misc Items \n4: View Cart \n0: Back"));
+       // msg = (Message)input.readObject();
+        }while(!msg.theMessage.equalsIgnoreCase("1") || !msg.theMessage.equalsIgnoreCase("0"));
+        
+//        if(msg.theMessage.equalsIgnoreCase("0"))
+//        {
+//        System.out.println("inside login" + msg.theMessage);
+//        return msg;
+//        }
     }
         catch(Exception e){
 	    System.err.println("Error: " + e.getMessage());
 	    e.printStackTrace(System.err);
 	}
+        return msg;
     }
     
-//    public void loginAsStaff(ObjectOutputStream output, ObjectInputStream input, Message msg)
-//    {
-//        try{
-//            
-//            output.writeObject(new Message("1: Maintain members \n2: Maintain staff \n3: Maintain games \n4: Maintain consoles \n5: Maintain misc. items \n0: back"));
-//            msg = (Message)input.readObject();
-//            do
-//            {
-//                if(msg.theMessage.equalsIgnoreCase("1"))
-//                    {
-//                        msg.theMessage = "";
-//                        while(!msg.theMessage.equalsIgnoreCase("0"))
-//                        {
-//                            output.writeObject(new Message("1: View members \n2: Add members \n3: Delete members \n0: back"));
-//                            msg = (Message)input.readObject();
-//                            //System.out.println();
-//                            
-//                            //View
-//                            if(msg.theMessage.equalsIgnoreCase("1"))
-//                            {
-//                                    for(Members obj: dataMembers)
-//                                    {
-//                                        System.out.println(obj);
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Add
-//                            if(msg.theMessage.equalsIgnoreCase("2"))
-//                            {
-//                                    output.writeObject(new Message("How many members would you like to enter: "));
-//                                    msg = (Message)input.readObject();
-//
-//                                    for(int i=0;i<Integer.parseInt(msg.theMessage);i++)
-//                                    {
-//                                        output.writeObject(new Message("Enter details of member " + (i+1)));
-//                                        System.out.println("Enter username: ");
-//                                        name = scan.next();
-//                                        System.out.println("Enter password: ");
-//                                        password = scan.next();
-//                                        System.out.println("Enter ID: ");
-//                                        ID = scan.nextInt();
-//                                        dataMembers.add(new Members(name, password, ID));
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Delete
-//                            if(command.equalsIgnoreCase("3"))
-//                            {
-//                                    System.out.println("Enter index of the member for deletion: ");
-//                                    input = scan.nextInt();
-//                                    dataMembers.remove(input);
-//                                    System.out.println();
-//                            }
-//                            
-//                        }
-//                        command = "";
-//                    }
-//                    
-////==============================================================================
-////===============================STAFF==========================================
-////==============================================================================
-//
-//                    if(command.equalsIgnoreCase("2"))
-//                    {
-//                        command = "";
-//                        while(!command.equalsIgnoreCase("0"))
-//                        {
-//                            System.out.println("1: View staff");
-//                            System.out.println("2: Add staff");
-//                            System.out.println("3: Delete staff");
-//                            System.out.println("0: back");
-//                            command = scan.next();
-//                            System.out.println();
-//                            
-//                            //View
-//                            if(command.equalsIgnoreCase("1"))
-//                            {
-//                                
-//                                
-//                                    for(Staff obj: dataStaff)
-//                                    {
-//                                        System.out.println(obj);
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Add
-//                            if(command.equalsIgnoreCase("2"))
-//                            {
-//                                    System.out.println("How many staff would you like to enter: ");
-//                                    input = scan.nextInt();
-//
-//                                    for(int i=0;i<input;i++)
-//                                    {
-//                                        System.out.println("Enter details of staff member " + (i+1));
-//                                        System.out.println("Enter name: ");
-//                                        name = scan.next();
-//                                        System.out.println("Enter password: ");
-//                                        password = scan.next();
-//                                        System.out.println("Enter staff ID: ");
-//                                        ID = scan.nextInt();
-//                                        dataStaff.add(new Staff(name, password, ID));
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Delete
-//                            if(command.equalsIgnoreCase("3"))
-//                            {
-//                                    System.out.println("Enter index of the staff member for deletion: ");
-//                                    input = scan.nextInt();
-//                                    dataStaff.remove(input);
-//                                    System.out.println();
-//                            }
-//                            
-//
-//                        }
-//                        command = "";
-//                    }
-//                    
-////==============================================================================
-////==============================GAMES===========================================
-////==============================================================================                    
-//                    
-//                    if(command.equalsIgnoreCase("3"))
-//                    {
-//                        command = "";
-//                        while(!command.equalsIgnoreCase("0"))
-//                        {
-//                            System.out.println("1: View games");
-//                            System.out.println("2: Add games");
-//                            System.out.println("3: Delete games");
-//                            System.out.println("0: back");
-//                            command = scan.next();
-//                            System.out.println();
-//                            
-//                            //View
-//                            if(command.equalsIgnoreCase("1"))
-//                            {
-//                                    for(Games obj: dataGames)
-//                                    {
-//                                        System.out.println(obj);
-//                                    }
-//                                    System.out.println();
-//                            }          
-//                            
-//                            //Add
-//                            if(command.equalsIgnoreCase("2"))
-//                            {
-//                                    System.out.println("How many games would you like to enter: ");
-//                                    input = scan.nextInt();
-//
-//                                    for(int i=0;i<input;i++)
-//                                    {
-//                                        System.out.println("Enter details of staff member " + (i+1));
-//                                        System.out.println("Enter title: ");
-//                                        title = scan.next();
-//                                        System.out.println("Enter genre: ");
-//                                        genre = scan.next();
-//                                        System.out.println("Enter system: ");
-//                                        sys = scan.next();
-//                                        System.out.println("Enter condition: ");
-//                                        condition = scan.next();
-//                                        System.out.println("Enter price: ");
-//                                        price = scan.nextInt();
-//                                        dataGames.add(new Games(title, genre, sys, condition, price));
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Delete
-//                            if(command.equalsIgnoreCase("3"))
-//                            {
-//                                    System.out.println("Enter index of the game for deletion: ");
-//                                    input = scan.nextInt();
-//                                    dataGames.remove(input);
-//                                    System.out.println();
-//                            }
-//                            
-//                        }
-//                        command = "";
-//                    }
-////==============================================================================
-////=============================CONSOLES=========================================
-////==============================================================================
-//                    if(command.equalsIgnoreCase("4"))
-//                    {
-//                        command = "";
-//                        while(!command.equalsIgnoreCase("0"))
-//                        {
-//                            System.out.println("1: View consoles");
-//                            System.out.println("2: Add consoles");
-//                            System.out.println("3: Delete consoles");
-//                            System.out.println("0: back");
-//                            command = scan.next();
-//                            System.out.println();
-//                            
-//                            
-//                            //View
-//                            if(command.equalsIgnoreCase("1"))
-//                            {
-//                                    for(Consoles obj: dataConsoles)
-//                                    {
-//                                        System.out.println(obj);
-//                                    }
-//                                    System.out.println();
-//                            } 
-//                            
-//                            //Add
-//                            if(command.equalsIgnoreCase("2"))
-//                            {
-//                                    System.out.println("How many consoles would you like to enter: ");
-//                                    input = scan.nextInt();
-//
-//                                    for(int i=0;i<input;i++)
-//                                    {
-//                                        System.out.println("Enter details for the console" + (i+1));
-//                                        System.out.println("Enter model: ");
-//                                        model = scan.next();
-//                                        System.out.println("Enter condition: ");
-//                                        condition = scan.next();
-//                                        System.out.println("Enter price: ");
-//                                        price = scan.nextInt();
-//                                        dataConsoles.add(new Consoles(model, condition, price));
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Delete
-//                            if(command.equalsIgnoreCase("3"))
-//                            {
-//                                    System.out.println("Enter index of the console for deletion: ");
-//                                    input = scan.nextInt();
-//                                    dataConsoles.remove(input);
-//                                    System.out.println();
-//                            }
-//                            
-//                        }
-//                        command = "";
-//                    }
-////==============================================================================
-////=============================MISC. ITEMS======================================
-////==============================================================================                    
-//                    if(command.equalsIgnoreCase("5"))
-//                    {
-//                        command = "";
-//                        while(!command.equalsIgnoreCase("0"))
-//                        {
-//                            System.out.println("1: View misc. items");
-//                            System.out.println("2: Add misc. items");
-//                            System.out.println("3: Delete misc. items");
-//                            System.out.println("0: back");
-//                            command = scan.next();
-//                            System.out.println();
-//                            
-//                            //View
-//                            if(command.equalsIgnoreCase("1"))
-//                            {
-//                                    for(Misc obj: dataMisc)
-//                                    {
-//                                        System.out.println(obj);
-//                                    }
-//                                    System.out.println();
-//                            }                    
-//                            
-//                            //Add
-//                            if(command.equalsIgnoreCase("2"))
-//                            {
-//                                    System.out.println("How many misc. items would you like to enter: ");
-//                                    input = scan.nextInt();
-//
-//                                    for(int i=0;i<input;i++)
-//                                    {
-//                                        System.out.println("Enter details of misc. item " + (i+1));
-//                                        System.out.println("Enter item name: ");
-//                                        itemName = scan.next();
-//                                        System.out.println("Enter item description: ");
-//                                        itemDescription = scan.next();
-//                                        System.out.println("Enter item type: ");
-//                                        itemType = scan.next();
-//                                        System.out.println("Enter item price: ");
-//                                        price = scan.nextInt();
-//                                        dataMisc.add(new Misc(itemName, itemDescription, itemType, price));
-//                                    }
-//                                    System.out.println();
-//                            }
-//                            
-//                            //Delete
-//                            if(command.equalsIgnoreCase("3"))
-//                            {
-//                                    System.out.println("Enter index of the misc. item for deletion: ");
-//                                    input = scan.nextInt();
-//                                    dataMisc.remove(input);
-//                                    System.out.println();
-//                            }
-//                            
-//                        }
-//                        command = "";
-//                    }
-//
-//                    
-//               // }
-//                command = "";
-//            }while(!msg.theMessage.equalsIgnoreCase("0"));
-//            
-//        }
-//        catch(Exception e){
-//	    System.err.println("Error: " + e.getMessage());
-//	    e.printStackTrace(System.err);
-//	}
-//    }
+    public Message loginAsStaff(ObjectOutputStream output, ObjectInputStream input, Message msg, String title, String model, String genre, String sys, String condition, String name, String password, String itemName, String itemDescription, String itemType, int ID, int num, double price, ArrayList<Members> dataMembers, ArrayList<Staff> dataStaff, ArrayList<Games> dataGames, ArrayList<Consoles> dataConsoles, ArrayList<Misc> dataMisc)
+    {
+        try{
+            
+            output.writeObject(new Message("\n1: Back \n2: Maintain members \n3: Maintain staff \n4: Maintain games \n5: Maintain consoles \n6: Maintain misc. items \n0: Exit"));
+            msg = (Message)input.readObject();
+            do
+            {
+                if(msg.theMessage.equalsIgnoreCase("0"))
+                    return msg;
+                if(msg.theMessage.equalsIgnoreCase("1"))
+                {
+                    output.writeObject(new Message("\n1: Back \n2: Maintain members \n3: Maintain staff \n4: Maintain games \n5: Maintain consoles \n6: Maintain misc. items \n0: Exit"));
+                    msg = (Message)input.readObject();
+                    System.out.println("inside 1");
+                    if(msg.theMessage.equalsIgnoreCase("1"))
+                    break;
+                }
+                if(msg.theMessage.equalsIgnoreCase("2"))
+                    {
+                        //msg.theMessage = "";
+                        output.writeObject(new Message("1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
+                        msg = (Message)input.readObject();
+                            
+                        while(!msg.theMessage.equalsIgnoreCase("0"))
+                        {
+                            //System.out.println();
+                            if(msg.theMessage.equalsIgnoreCase("1"))
+                            {
+                                System.out.println("inside maintain members 1");
+                                break;
+                            }
+                            //View
+                            if(msg.theMessage.equalsIgnoreCase("2"))
+                            {
+                                String [] array = new String[dataMembers.size()];
+                                int i = 0;
+                                
+                                for(Members obj: dataMembers)
+                                {
+                                    array[i] = obj.toString();
+                                    i++;
+                                    //System.out.println(obj);
+                                }
+                                String str = String.join("\n",array);
+                                output.writeObject(new Message(str + "\n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
+                                msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Add
+                            if(msg.theMessage.equalsIgnoreCase("3"))
+                            {
+                                    output.writeObject(new Message("How many members would you like to enter: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+
+                                    for(int i = 0; i < num; i++)
+                                    {
+                                        output.writeObject(new Message("Enter details of member " + (i+1) + "\nEnter username: "));
+                                        //System.out.println("Enter username: ");
+                                        msg = (Message)input.readObject();
+                                        name = msg.theMessage;
+                                        output.writeObject(new Message("Enter password: "));
+                                        msg = (Message)input.readObject();
+                                        password = msg.theMessage;
+                                        output.writeObject(new Message("Enter ID: "));
+                                        msg = (Message)input.readObject();
+                                        ID = Integer.parseInt(msg.theMessage);
+                                        dataMembers.add(new Members(name, password, ID));
+                                    }
+                                    
+                                    output.writeObject(new Message("\n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Delete
+                            if(msg.theMessage.equalsIgnoreCase("4"))
+                            {
+                                    output.writeObject(new Message("Enter index of the member for deletion: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+                                    dataMembers.remove(num);
+                                    output.writeObject(new Message("\nMember deleted \n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                   // System.out.println();
+                            }
+                            
+                        }
+                        //command = "";
+                    }
+                    
+//==============================================================================
+//===============================STAFF==========================================
+//==============================================================================
+
+                    if(msg.theMessage.equalsIgnoreCase("3"))
+                    {
+                        //command = "";
+                        output.writeObject(new Message("\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
+                        msg = (Message)input.readObject();
+                        while(!msg.theMessage.equalsIgnoreCase("0"))
+                        {
+                            //System.out.println();
+                            if(msg.theMessage.equalsIgnoreCase("1"))
+                            break;
+                            //View
+                            if(msg.theMessage.equalsIgnoreCase("2"))
+                            {
+                                String [] array = new String[dataStaff.size()];
+                                int i = 0;
+                                
+                                for(Staff obj: dataStaff)
+                                {
+                                    array[i] = obj.toString();
+                                    i++;
+                                }
+                                String str = String.join("\n",array);
+                                output.writeObject(new Message(str + "\n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
+                                msg = (Message)input.readObject();
+                                //System.out.println();
+                            }
+                            
+                            //Add
+                            if(msg.theMessage.equalsIgnoreCase("3"))
+                            {
+                                    output.writeObject(new Message("\nHow many staff would you like to enter: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+
+                                    for(int i=0; i < num; i++)
+                                    {
+                                        output.writeObject(new Message("Enter details of staff member " + (i+1) + "\nEnter name: "));
+                                        msg = (Message)input.readObject();
+                                        name = msg.theMessage;
+                                        output.writeObject(new Message("Enter password: "));
+                                        msg = (Message)input.readObject();
+                                        password = msg.theMessage;
+                                        output.writeObject(new Message("Enter staff ID: "));
+                                        msg = (Message)input.readObject();
+                                        ID = Integer.parseInt(msg.theMessage);
+                                        dataStaff.add(new Staff(name, password, ID));
+                                    }
+                                    output.writeObject(new Message("\n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Delete
+                            if(msg.theMessage.equalsIgnoreCase("4"))
+                            {
+                                    output.writeObject(new Message("Enter index of the staff member for deletion: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+                                    dataStaff.remove(num);
+                                    output.writeObject(new Message("\nStaff member deleted \n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+
+                        }
+                        //command = "";
+                    }
+                    
+//==============================================================================
+//==============================GAMES===========================================
+//==============================================================================                    
+                    
+                    if(msg.theMessage.equalsIgnoreCase("4"))
+                    {
+                        //command = "";
+                        output.writeObject(new Message("\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
+                        msg = (Message)input.readObject();
+                        
+                        while(!msg.theMessage.equalsIgnoreCase("0"))
+                        {
+                            //System.out.println();
+                            if(msg.theMessage.equalsIgnoreCase("1"))
+                            break;
+                            //View
+                            if(msg.theMessage.equalsIgnoreCase("2"))
+                            {
+                                String [] array = new String[dataGames.size()];
+                                int i = 0;
+                                
+                                for(Games obj: dataGames)
+                                {
+                                    array[i] = obj.toString();
+                                    i++;
+                                }
+                                String str = String.join("\n",array);
+                                output.writeObject(new Message(str + "\n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
+                                msg = (Message)input.readObject();
+                            }          
+                            
+                            //Add
+                            if(msg.theMessage.equalsIgnoreCase("3"))
+                            {
+                                    output.writeObject(new Message("How many games would you like to enter: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+
+                                    for(int i = 0; i < num; i++)
+                                    {
+                                        output.writeObject(new Message("Enter details of game number " + (i+1) + "\nEnter title: "));
+                                        msg = (Message)input.readObject();
+                                        title = msg.theMessage;
+                                        output.writeObject(new Message("Enter genre: "));
+                                        msg = (Message)input.readObject();
+                                        genre = msg.theMessage;
+                                        output.writeObject(new Message("Enter system: "));
+                                        msg = (Message)input.readObject();
+                                        sys = msg.theMessage;
+                                        output.writeObject(new Message("Enter condition: "));
+                                        msg = (Message)input.readObject();
+                                        condition = msg.theMessage;
+                                        output.writeObject(new Message("Enter price: "));
+                                        msg = (Message)input.readObject();
+                                        price = Integer.parseInt(msg.theMessage);
+                                        dataGames.add(new Games(title, genre, sys, condition, price));
+                                    }
+                                    
+                                    output.writeObject(new Message("\n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Delete
+                            if(msg.theMessage.equalsIgnoreCase("4"))
+                            {
+                                    output.writeObject(new Message("Enter index of the game for deletion: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+                                    dataGames.remove(num);
+                                    output.writeObject(new Message("\nGame deleted \n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                        }
+                        //command = "";
+                    }
+//==============================================================================
+//=============================CONSOLES=========================================
+//==============================================================================
+                    if(msg.theMessage.equalsIgnoreCase("5"))
+                    {
+                        //command = "";
+                        output.writeObject(new Message("\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
+                        msg = (Message)input.readObject();
+                        
+                        while(!msg.theMessage.equalsIgnoreCase("0"))
+                        {
+                            //System.out.println();
+                            if(msg.theMessage.equalsIgnoreCase("1"))
+                            break;
+                            
+                            //View
+                            if(msg.theMessage.equalsIgnoreCase("2"))
+                            {
+                                String [] array = new String[dataConsoles.size()];
+                                int i = 0;
+                                
+                                for(Consoles obj: dataConsoles)
+                                {
+                                    array[i] = obj.toString();
+                                    i++;
+                                }
+                                String str = String.join("\n",array);
+                                output.writeObject(new Message(str + "\n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
+                                msg = (Message)input.readObject();
+                            } 
+                            
+                            //Add
+                            if(msg.theMessage.equalsIgnoreCase("3"))
+                            {
+                                    output.writeObject(new Message("How many consoles would you like to enter: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+
+                                    for(int i = 0; i < num; i++)
+                                    {
+                                        output.writeObject(new Message("Enter details for the console " + (i+1) + "\nEnter model: "));
+                                        msg = (Message)input.readObject();
+                                        model = msg.theMessage;
+                                        output.writeObject(new Message("Enter condition: "));
+                                        msg = (Message)input.readObject();
+                                        condition = msg.theMessage;
+                                        output.writeObject(new Message("Enter price: "));
+                                        msg = (Message)input.readObject();
+                                        price = Integer.parseInt(msg.theMessage);
+                                        dataConsoles.add(new Consoles(model, condition, price));
+                                    }
+                                    
+                                    output.writeObject(new Message("\n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Delete
+                            if(msg.theMessage.equalsIgnoreCase("4"))
+                            {
+                                    output.writeObject(new Message("Enter index of the console for deletion: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+                                    dataConsoles.remove(num);
+                                    output.writeObject(new Message("\nConsole deleted \n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                        }
+                        //command = "";
+                    }
+//==============================================================================
+//=============================MISC. ITEMS======================================
+//==============================================================================                    
+                    if(msg.theMessage.equalsIgnoreCase("6"))
+                    {
+                        //command = "";
+                        output.writeObject(new Message("\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
+                        msg = (Message)input.readObject();
+                        
+                        while(!msg.theMessage.equalsIgnoreCase("0"))
+                        {
+                            //System.out.println();
+                            if(msg.theMessage.equalsIgnoreCase("1"))
+                            break;
+                            //View
+                            if(msg.theMessage.equalsIgnoreCase("2"))
+                            {
+                                String [] array = new String[dataMisc.size()];
+                                int i = 0;
+                                
+                                for(Misc obj: dataMisc)
+                                {
+                                    array[i] = obj.toString();
+                                    i++;
+                                }
+                                String str = String.join("\n",array);
+                                output.writeObject(new Message(str + "\n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
+                                msg = (Message)input.readObject();
+                            }                    
+                            
+                            //Add
+                            if(msg.theMessage.equalsIgnoreCase("3"))
+                            {
+                                    output.writeObject(new Message("How many misc. items would you like to enter: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage);
+
+                                    for(int i = 0; i < num; i++)
+                                    {
+                                        output.writeObject(new Message("Enter details of misc. item " + (i+1) + "\nEnter item name: "));
+                                        msg = (Message)input.readObject();
+                                        itemName = msg.theMessage;
+                                        output.writeObject(new Message("Enter item description: "));
+                                        msg = (Message)input.readObject();
+                                        itemDescription = msg.theMessage;
+                                        output.writeObject(new Message("Enter item type: "));
+                                        msg = (Message)input.readObject();
+                                        itemType = msg.theMessage;
+                                        output.writeObject(new Message("Enter item price: "));
+                                        msg = (Message)input.readObject();
+                                        price = Integer.parseInt(msg.theMessage);
+                                        dataMisc.add(new Misc(itemName, itemDescription, itemType, price));
+                                    }
+                                    output.writeObject(new Message("\n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                            //Delete
+                            if(msg.theMessage.equalsIgnoreCase("4"))
+                            {
+                                    output.writeObject(new Message("Enter index of the misc. item for deletion: "));
+                                    msg = (Message)input.readObject();
+                                    num = Integer.parseInt(msg.theMessage); 
+                                    dataMisc.remove(num);
+                                    output.writeObject(new Message("\nMisc item deleted \n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
+                                    msg = (Message)input.readObject();
+                                    //System.out.println();
+                            }
+                            
+                        }
+                        //command = "";
+                    }
+
+                    
+               // }
+                //command = "";
+            }while(!msg.theMessage.equalsIgnoreCase("1") || !msg.theMessage.equalsIgnoreCase("0"));
+            
+        }
+        catch(Exception e){
+	    System.err.println("Error: " + e.getMessage());
+	    e.printStackTrace(System.err);
+	}
+        return msg;
+    }
 
 } //-- end class EchoThread
