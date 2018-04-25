@@ -102,6 +102,7 @@ public class Threads extends Thread
                     msg = loginAsMember(output, input, msg, title, model, itemName, num, price, total, dataGames, dataCart, dataConsoles, dataMisc);
                 if(msg.theMessage.equalsIgnoreCase("2"))
                     msg = loginAsStaff(output, input, msg, title, model, genre, sys, condition, name, password, itemName, itemDescription, itemType, ID, num, price, dataMembers, dataStaff, dataGames, dataConsoles, dataMisc);
+                
 		// Write an ACK back to the sender
 //		count++;
 //		output.writeObject(new Message("Recieved message #" + count));
@@ -132,6 +133,7 @@ public class Threads extends Thread
         
         output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
         msg = (Message)input.readObject();
+        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
         
         do{
                 if(msg.theMessage.equalsIgnoreCase("1"))
@@ -156,11 +158,13 @@ public class Threads extends Thread
                         //System.out.println();
                         //output.writeObject(new Message ("\nWould you like to add an item to your cart?(y/n)"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         if(msg.theMessage.equalsIgnoreCase("y"))
                         {
                             output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             num = Integer.parseInt(msg.theMessage);
                             num = num - 1;
                             title = dataGames.get(num).getTitle();
@@ -169,6 +173,7 @@ public class Threads extends Thread
                             dataCart.add(new Cart(title,price));
                             output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             //System.out.println();
                             
                         }
@@ -177,6 +182,7 @@ public class Threads extends Thread
                         {
                             output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         }
                         
                         //System.out.println();
@@ -199,12 +205,14 @@ public class Threads extends Thread
                         //System.out.println("Would you like to add an item to your cart?(y/n)");
                         //response = scan.next();
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         if(msg.theMessage.equalsIgnoreCase("y"))
                         {
                             output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             //input = scan.nextInt();
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                            // title = dataGames.get(Integer.parseInt(msg.theMessage)).getTitle();
                             num = Integer.parseInt(msg.theMessage);
                             num = num - 1;
@@ -215,6 +223,7 @@ public class Threads extends Thread
                             dataCart.add(new Cart(model,price));
                             output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             //System.out.println();
                             
                         }
@@ -223,6 +232,7 @@ public class Threads extends Thread
                         {
                             output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         }
                        // System.out.println();
                     }
@@ -244,12 +254,14 @@ public class Threads extends Thread
                         //System.out.println("Would you like to add an item to your cart?(y/n)");
                         //response = scan.next();
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         if(msg.theMessage.equalsIgnoreCase("y"))
                         {
                             output.writeObject(new Message ("Please enter the item number you wish to add to cart"));
                             //input = scan.nextInt();
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             num = Integer.parseInt(msg.theMessage);
                             num = num - 1;
                             //model = dataConsoles.get(Integer.parseInt(msg.theMessage)).getModel();
@@ -259,6 +271,7 @@ public class Threads extends Thread
                             dataCart.add(new Cart(itemName,price));
                             output.writeObject(new Message ("Item added to cart \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             //System.out.println();
                             
                         }
@@ -267,6 +280,7 @@ public class Threads extends Thread
                         {
                             output.writeObject(new Message ("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         }
                         
                         //System.out.println();
@@ -278,6 +292,7 @@ public class Threads extends Thread
                         {
                             output.writeObject(new Message("Cart is empty \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             //System.out.println();
                         }
                         else
@@ -296,6 +311,7 @@ public class Threads extends Thread
                             String str = String.join("\n",array);
                             output.writeObject(new Message(str + "\n\nThe total cost of the items is " + total + "\n\n1: Back \n2: Purchase Items" + "\n3: Remove Item" + "\n0: Exit"));
                             msg = (Message)input.readObject();
+                            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
 //                            for(Cart obj: dataCart)
 //                                {
 //                                    total = total + obj.price;
@@ -319,6 +335,7 @@ public class Threads extends Thread
                                 {
                                     output.writeObject(new Message("\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     break;
                                 }
 
@@ -326,6 +343,7 @@ public class Threads extends Thread
                                 {
                                     output.writeObject(new Message("Thank you for your purchase \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                                     dataCart.clear();
                                     break;
@@ -337,6 +355,7 @@ public class Threads extends Thread
                                     output.writeObject(new Message("Please enter the item number you wish to remove"));
                                     //input = scan.nextInt();
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
                                     num = num - 1;
                                     dataCart.remove(num);
@@ -345,6 +364,7 @@ public class Threads extends Thread
                                     {
                                         output.writeObject(new Message("Item removed \n\nCart is empty \n\n1: Back \n2: View Games \n3: View Consoles \n4: View Misc Items \n5: View Cart \n0: Exit"));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
 //                                        if(msg.theMessage.equalsIgnoreCase("0"))
 //                                        {
 //                                            output.writeObject(new Message("Thank you! Please come again"));
@@ -372,6 +392,7 @@ public class Threads extends Thread
                                         str = String.join("\n",newArray);
                                         output.writeObject(new Message(str + "\n\nThe total cost of the items is " + total + "\n\n1: Back \n2: Purchase Items" + "\n3: Remove Item" + "\n0: Exit"));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
 //                                        if(msg.theMessage.equalsIgnoreCase("0"))
 //                                        {
 //                                           // output.writeObject(new Message("Thank you! Please come again"));
@@ -435,6 +456,11 @@ public class Threads extends Thread
             
             output.writeObject(new Message("\n1: Back \n2: Maintain members \n3: Maintain staff \n4: Maintain games \n5: Maintain consoles \n6: Maintain misc. items \n0: Exit"));
             msg = (Message)input.readObject();
+            System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
+            
+            if(msg.theMessage.equalsIgnoreCase("1"))
+                return msg;
+                
             do
             {
                 if(msg.theMessage.equalsIgnoreCase("0"))
@@ -443,7 +469,8 @@ public class Threads extends Thread
                 {
                     output.writeObject(new Message("\n1: Back \n2: Maintain members \n3: Maintain staff \n4: Maintain games \n5: Maintain consoles \n6: Maintain misc. items \n0: Exit"));
                     msg = (Message)input.readObject();
-                    System.out.println("inside 1");
+                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
+                    //System.out.println("inside 1");
                     if(msg.theMessage.equalsIgnoreCase("1"))
                     break;
                 }
@@ -452,13 +479,14 @@ public class Threads extends Thread
                         //msg.theMessage = "";
                         output.writeObject(new Message("1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             
                         while(!msg.theMessage.equalsIgnoreCase("0"))
                         {
                             //System.out.println();
                             if(msg.theMessage.equalsIgnoreCase("1"))
                             {
-                                System.out.println("inside maintain members 1");
+                                //System.out.println("inside maintain members 1");
                                 break;
                             }
                             //View
@@ -476,6 +504,7 @@ public class Threads extends Thread
                                 String str = String.join("\n",array);
                                 output.writeObject(new Message(str + "\n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
                                 msg = (Message)input.readObject();
+                                System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -484,6 +513,7 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("How many members would you like to enter: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
 
                                     for(int i = 0; i < num; i++)
@@ -491,18 +521,22 @@ public class Threads extends Thread
                                         output.writeObject(new Message("Enter details of member " + (i+1) + "\nEnter username: "));
                                         //System.out.println("Enter username: ");
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         name = msg.theMessage;
                                         output.writeObject(new Message("Enter password: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         password = msg.theMessage;
                                         output.writeObject(new Message("Enter ID: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         ID = Integer.parseInt(msg.theMessage);
                                         dataMembers.add(new Members(name, password, ID));
                                     }
                                     
                                     output.writeObject(new Message("\n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -511,10 +545,12 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("Enter index of the member for deletion: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
                                     dataMembers.remove(num);
                                     output.writeObject(new Message("\nMember deleted \n\n1: Back \n2: View members \n3: Add members \n4: Delete members \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                    // System.out.println();
                             }
                             
@@ -531,6 +567,7 @@ public class Threads extends Thread
                         //command = "";
                         output.writeObject(new Message("\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         while(!msg.theMessage.equalsIgnoreCase("0"))
                         {
                             //System.out.println();
@@ -550,6 +587,7 @@ public class Threads extends Thread
                                 String str = String.join("\n",array);
                                 output.writeObject(new Message(str + "\n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
                                 msg = (Message)input.readObject();
+                                System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                 //System.out.println();
                             }
                             
@@ -558,23 +596,28 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("\nHow many staff would you like to enter: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
 
                                     for(int i=0; i < num; i++)
                                     {
                                         output.writeObject(new Message("Enter details of staff member " + (i+1) + "\nEnter name: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         name = msg.theMessage;
                                         output.writeObject(new Message("Enter password: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         password = msg.theMessage;
                                         output.writeObject(new Message("Enter staff ID: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         ID = Integer.parseInt(msg.theMessage);
                                         dataStaff.add(new Staff(name, password, ID));
                                     }
                                     output.writeObject(new Message("\n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -583,10 +626,12 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("Enter index of the staff member for deletion: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
                                     dataStaff.remove(num);
                                     output.writeObject(new Message("\nStaff member deleted \n\n1: Back \n2: View staff \n3: Add staff \n4: Delete staff \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -604,6 +649,7 @@ public class Threads extends Thread
                         //command = "";
                         output.writeObject(new Message("\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         while(!msg.theMessage.equalsIgnoreCase("0"))
                         {
@@ -624,6 +670,7 @@ public class Threads extends Thread
                                 String str = String.join("\n",array);
                                 output.writeObject(new Message(str + "\n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
                                 msg = (Message)input.readObject();
+                                System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             }          
                             
                             //Add
@@ -631,30 +678,37 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("How many games would you like to enter: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
 
                                     for(int i = 0; i < num; i++)
                                     {
                                         output.writeObject(new Message("Enter details of game number " + (i+1) + "\nEnter title: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         title = msg.theMessage;
                                         output.writeObject(new Message("Enter genre: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         genre = msg.theMessage;
                                         output.writeObject(new Message("Enter system: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         sys = msg.theMessage;
                                         output.writeObject(new Message("Enter condition: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         condition = msg.theMessage;
                                         output.writeObject(new Message("Enter price: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         price = Integer.parseInt(msg.theMessage);
                                         dataGames.add(new Games(title, genre, sys, condition, price));
                                     }
                                     
                                     output.writeObject(new Message("\n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -663,10 +717,12 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("Enter index of the game for deletion: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
                                     dataGames.remove(num);
                                     output.writeObject(new Message("\nGame deleted \n\n1: Back \n2: View games \n3: Add games \n4: Delete games \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -681,6 +737,7 @@ public class Threads extends Thread
                         //command = "";
                         output.writeObject(new Message("\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         while(!msg.theMessage.equalsIgnoreCase("0"))
                         {
@@ -702,6 +759,7 @@ public class Threads extends Thread
                                 String str = String.join("\n",array);
                                 output.writeObject(new Message(str + "\n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
                                 msg = (Message)input.readObject();
+                                System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             } 
                             
                             //Add
@@ -709,24 +767,29 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("How many consoles would you like to enter: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
 
                                     for(int i = 0; i < num; i++)
                                     {
                                         output.writeObject(new Message("Enter details for the console " + (i+1) + "\nEnter model: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         model = msg.theMessage;
                                         output.writeObject(new Message("Enter condition: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         condition = msg.theMessage;
                                         output.writeObject(new Message("Enter price: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         price = Integer.parseInt(msg.theMessage);
                                         dataConsoles.add(new Consoles(model, condition, price));
                                     }
                                     
                                     output.writeObject(new Message("\n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -735,10 +798,12 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("Enter index of the console for deletion: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
                                     dataConsoles.remove(num);
                                     output.writeObject(new Message("\nConsole deleted \n\n1: Back \n2: View consoles \n3: Add consoles \n4: Delete consoles \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -753,6 +818,7 @@ public class Threads extends Thread
                         //command = "";
                         output.writeObject(new Message("\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
                         msg = (Message)input.readObject();
+                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                         
                         while(!msg.theMessage.equalsIgnoreCase("0"))
                         {
@@ -773,6 +839,7 @@ public class Threads extends Thread
                                 String str = String.join("\n",array);
                                 output.writeObject(new Message(str + "\n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
                                 msg = (Message)input.readObject();
+                                System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                             }                    
                             
                             //Add
@@ -780,26 +847,32 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("How many misc. items would you like to enter: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage);
 
                                     for(int i = 0; i < num; i++)
                                     {
                                         output.writeObject(new Message("Enter details of misc. item " + (i+1) + "\nEnter item name: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         itemName = msg.theMessage;
                                         output.writeObject(new Message("Enter item description: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         itemDescription = msg.theMessage;
                                         output.writeObject(new Message("Enter item type: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         itemType = msg.theMessage;
                                         output.writeObject(new Message("Enter item price: "));
                                         msg = (Message)input.readObject();
+                                        System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                         price = Integer.parseInt(msg.theMessage);
                                         dataMisc.add(new Misc(itemName, itemDescription, itemType, price));
                                     }
                                     output.writeObject(new Message("\n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
@@ -808,10 +881,12 @@ public class Threads extends Thread
                             {
                                     output.writeObject(new Message("Enter index of the misc. item for deletion: "));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     num = Integer.parseInt(msg.theMessage); 
                                     dataMisc.remove(num);
                                     output.writeObject(new Message("\nMisc item deleted \n\n1: Back \n2: View misc. items \n3: Add misc. items \n4: Delete misc. items \n0: Exit"));
                                     msg = (Message)input.readObject();
+                                    System.out.println("[" + socket.getInetAddress() + ":" + socket.getPort() + "] " + msg.theMessage);
                                     //System.out.println();
                             }
                             
